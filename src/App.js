@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  unstable_HistoryRouter as HistoryRouter,
+} from "react-router-dom";
+
+import { routes } from "./app/routes";
+import Header from "./components/Header";
+import DemoQuery from "./demo/DemoQuery";
+import { createBrowserHistory } from "history";
+
+const history = createBrowserHistory();
+// history.push("/signin")
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HistoryRouter history={history}>
+      <Header />
+
+      <Routes>
+        {routes.map(({ path: p, component: Component }) => (
+          <Route key={p} path={p} element={<Component />}></Route>
+        ))}
+
+        <Route path="/demo-query/:title" element={<DemoQuery />} />
+      </Routes>
+    </HistoryRouter>
   );
 }
 
